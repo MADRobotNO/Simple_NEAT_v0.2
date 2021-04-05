@@ -36,13 +36,33 @@ class Neat:
         self.list_of_all_models.append(model)
         return model
 
-    def fit(self, input_data, number_of_generations):
+    def fit(self, input_data, target_data, number_of_generations):
         for generation in range(1, number_of_generations+1):
             print("Generation:", generation)
-            for model in self.list_of_all_models:
-                model.mutate(self.list_of_innovations)
-                # if len(model.list_of_all_layers) > 3:
-                print(model)
+            # for each data row ...
+            for index, input_row in enumerate(input_data):
+                # ... train each model
+                for model in self.list_of_all_models:
+                    model.fit(input_row, target_data[index])
+                    print(model)
+            # for model in self.list_of_all_models:
+            #     model.mutate(self.list_of_innovations)
+
+    def get_best_and_second_best_model(self):
+        current_highest = 0.0
+        current_second_highest = 0.0
+        current_first_model = None
+        current_second_model = None
+        for model in self.list_of_all_models:
+            if model.score > current_highest:
+                current_second_highest = current_highest
+                current_second_model = current_first_model
+                current_highest = model.score
+                current_first_model = model
+            elif model.score > current_second_highest:
+                current_second_highest = model.score
+                current_second_model = model
+        return [{"first": current_first_model}, {"second": current_second_model}]
 
     def __str__(self):
         return_string = "Current NEAT state:\n"

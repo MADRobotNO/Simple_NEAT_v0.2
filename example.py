@@ -1,5 +1,6 @@
 from NEAT import Neat
+from RandomData import Xor
 
-
-neat = Neat(3, 2, 1, 0.1)
-neat.fit(None, 10)
+xor = Xor()
+neat = Neat(2, 1, 1, 0.1)
+neat.fit(xor.data, xor.targets, 1)

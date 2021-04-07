@@ -158,18 +158,24 @@ class Model:
         for input_index, input_node in enumerate(self.input_layer.list_of_layer_nodes):
             input_node.output = input_data[input_index]
         # hidden layers
-        for hidden_index, hidden_layer in reversed(list(enumerate(self.list_of_all_hidden_layers))):
+        for hidden_layer in reversed(self.list_of_all_hidden_layers):
             for node in hidden_layer.list_of_layer_nodes:
-                pass
-        # output layer
-        if len(self.list_of_all_layers) == 2:
-            for output_index, node in enumerate(self.output_layer.list_of_layer_nodes):
-                for output_conn_index, connection in enumerate(self.output_layer.list_of_layer_connections):
-                    if connection.to_node == node.node_id:
+                node.input_data = 0.0
+                for hidden_conn_index, connection in enumerate(hidden_layer.list_of_layer_connections):
+                    if connection.to_node == node.node_id and connection.enabled:
                         input_node = self.get_node_by_id(connection.from_node)
                         node.input_data += input_node.output * connection.weight
                 node.calculate_output()
-                self.outputs.append(node.output)
+
+        # output layer
+        for node in self.output_layer.list_of_layer_nodes:
+            node.input_data = 0.0
+            for output_conn_index, output_connection in enumerate(self.output_layer.list_of_layer_connections):
+                if output_connection.to_node == node.node_id and output_connection.enabled:
+                    input_node = self.get_node_by_id(output_connection.from_node)
+                    node.input_data += input_node.output * output_connection.weight
+            node.calculate_output()
+            self.outputs.append(node.output)
         return self.outputs
 
     def fit(self, input_data, target):

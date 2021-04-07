@@ -44,9 +44,12 @@ class Neat:
                 # ... train each model
                 for model in self.list_of_all_models:
                     model.fit(input_row, target_data[index])
-                    print(model)
-            # for model in self.list_of_all_models:
-            #     model.mutate(self.list_of_innovations)
+
+        best_models = self.get_best_and_second_best_model()
+        print("\nBest model:")
+        print(best_models.get('first'))
+        print("Second best:")
+        print(best_models.get('second'))
 
     def get_best_and_second_best_model(self):
         current_highest = 0.0
@@ -62,7 +65,7 @@ class Neat:
             elif model.score > current_second_highest:
                 current_second_highest = model.score
                 current_second_model = model
-        return [{"first": current_first_model}, {"second": current_second_model}]
+        return {"first": current_first_model, "second": current_second_model}
 
     def __str__(self):
         return_string = "Current NEAT state:\n"

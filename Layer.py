@@ -93,7 +93,7 @@ class Layer:
     def __str__(self):
         return_string = "Layer id: " + str(self.layer_id) + ", layer type: " + self.layer_type + ", number of connections: " \
                         + str(len(self.list_of_layer_connections)) + ", number of nodes: " + str(len(self.list_of_layer_nodes)) + "\n"
-        return_string += "Nodes\n"
+        return_string += "Nodes:\n"
         if len(self.list_of_layer_nodes) > 0:
             for node in self.list_of_layer_nodes:
                 return_string += node.__str__() + "\n"

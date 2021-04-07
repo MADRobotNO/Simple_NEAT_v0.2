@@ -35,8 +35,8 @@ class Node:
             self.bias = np.random.uniform(-1, 1)
 
     def calculate_output(self):
-        input_data = self.input_data + self.bias
-        self.output = self.activate(input_data)
+        self.input_data = self.input_data + self.bias
+        self.output = self.activate(self.input_data)
         return self.output
 
     def activate(self, value):
